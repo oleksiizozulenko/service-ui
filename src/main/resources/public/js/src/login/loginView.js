@@ -36,6 +36,8 @@ define(function(require, exports, module) {
     var LoginRestoreView = require('login/loginRestoreView');
     var LoginResetView = require('login/loginResetView');
 
+    var TwitterNewsComponent = require('components/TwitterNewsComponent');
+
     var LoginView = Epoxy.View.extend({
 
         className: 'login-page',
@@ -65,7 +67,8 @@ define(function(require, exports, module) {
             }
 
             this.render();
-
+            this.twitterComponent = new TwitterNewsComponent();
+            $('[data-js-twitter-container]', this.$el).html(this.twitterComponent.$el);
             var urlModel = new SingletonURLParamsModel();
 
             if (urlModel.get('reset')) {
@@ -153,6 +156,7 @@ define(function(require, exports, module) {
 
         onDestroy: function(){
             clearInterval(this.timer);
+            this.twitterComponent && this.twitterComponent.destroy();
             this.remove();
         }
     });
