@@ -47,10 +47,25 @@ define(function (require, exports, module) {
 
         initialize: function() {
             this.render();
+            this.update();
         },
         render: function() {
             this.$el.html(Util.templates(this.template, this.options));
         },
+        update: function() {
+            $.ajax({
+                url: '//evbyminsd6293.minsk.epam.com:8081/twitter',
+                dataType: 'jsonp',
+                crossDomain: true,
+                async: true,
+            })
+                .done(function(data) {
+                    console.dir(data)
+                })
+        },
+        renderTwits: function() {
+            $('[data-js-items-container]', this.$el)
+        }
     });
 
 
