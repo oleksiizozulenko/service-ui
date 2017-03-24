@@ -513,7 +513,7 @@ define(['util'], function () {
             percentageOfProductBugs: 'Percentage of product bugs',
             percentageOfSystemIssues: 'Percentage of system issues',
             percentageOfAutoBugs: 'Percentage of auto bugs',
-            pleaseUpdateWidget: 'Please, update widget by saving it in <span class="rp-link" href="">Widget Wizard</span>.',
+            pleaseUpdateWidget: 'Please, update widget by saving it in <span class="rp-link" href="">Edit Widget</span>.',
             haveInvalidCriteria: 'You have <strong>%%% invalid $$$</strong> with deleted defect types.',
             invalidCriteria: 'Invalid criterion',
             criteria: 'criteria',
@@ -1571,7 +1571,7 @@ define(['util'], function () {
             confirmMinMax: "Password should have size from '4' to '25' symbols",
             confirmMatch: "Passwords do not match",
             fullNameInfoRegex: "Full name should have size from '3' to '256' symbols, Latin, Cyrillic, numeric characters, hyphen, underscore, dot, space.",
-            loginRegex: "Full name should have size from '1' to '128' symbols, Latin, numeric characters, hyphen, underscore.",
+            loginRegex: "Login should have size from '1' to '128' symbols, Latin, numeric characters, hyphen, underscore.",
             originalPassRegex: "Password should have size from '4' to '25' symbols",
             hostMatchRegex: 'Check the entered data',
 

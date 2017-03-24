@@ -26,6 +26,9 @@ define(function (require, exports, module) {
     var ModalView = require('modals/_modalView');
     var Util = require('util');
     var Urls = require('dataUrlResolver');
+    var App = require('app');
+
+    var config = App.getInstance();
 
     var ModalLogAttachmentImage = ModalView.extend({
         tpl: 'tpl-modal-log-attachment-image',
@@ -34,11 +37,12 @@ define(function (require, exports, module) {
         events: {
             'click [data-js-image]': 'openImgInNewWindow',
             'click [data-js-rotate]': 'onClickRotate',
+            'click [data-js-close]': 'onClickClose',
+            'click [data-js-cancel]': 'onClickCancel'
         },
 
         initialize: function(options) {
             this.rotate = 0;
-            self.nativeSize = {};
             this.imageSrc = Urls.getFileById(options.imageId);
             this.render();
         },
@@ -48,18 +52,27 @@ define(function (require, exports, module) {
             var self = this;
             $('[data-js-image]', this.$el).load(function () {
                 self.$modalWrapper.removeClass('loading');
-                self.nativeSize = {
-                    width: $('[data-js-image-block]', self.$el).width(),
-                    height: $('[data-js-image-block]', self.$el).height(),
-                }
             })
         },
 
         render: function() {
             this.$el.html(Util.templates(this.tpl, {imageSrc: this.imageSrc}));
         },
+        onClickClose: function(){
+            config.trackingDispatcher.trackEventNumber(509);
+        },
+        onClickCancel: function(){
+            config.trackingDispatcher.trackEventNumber(511);
+        },
         onClickRotate: function() {
+            config.trackingDispatcher.trackEventNumber(510);
             this.rotate += 90;
+            if (!this.nativeSize) {
+                this.nativeSize = {
+                    width: $('[data-js-image-block]', this.$el).width(),
+                    height: $('[data-js-image-block]', this.$el).height(),
+                }
+            }
             $('[data-js-image]', this.$el).css('transform', 'rotate('+this.rotate+'deg)');
             if ((this.rotate/90)%2 == 1) {
                 $('[data-js-image-block]', this.$el).css({height: this.nativeSize.width});
