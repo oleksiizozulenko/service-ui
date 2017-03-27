@@ -22,22 +22,21 @@ define(function (require, exports, module) {
     'use strict';
 
     var $ = require('jquery');
+    var Backbone = require('backbone');
     var Epoxy = require('backbone-epoxy');
     var Util = require('util');
+    var TwitterNewsItemView = require('components/twitterNewsComponent/TwitterNewsItemView');
 
-    var TwitterNewsItem = Epoxy.View.extend({
-        className: 'post-news-item',
-        template: 'tpl-twitter-news-item',
-        events: {
-        },
-
-        initialize: function() {
-            this.render();
-        },
-        render: function() {
-            this.$el.html(Util.templates(this.template, this.options));
-        },
+    var TwitterModel = Epoxy.Model.extend({
+       defaults: {
+           text: '',
+           user: '',
+       }
     });
+
+    var TwitterCollection = Backbone.Collection.extend({
+        model: TwitterModel,
+    })
 
     var TwitterNewsComponent = Epoxy.View.extend({
         className: 'post-news-component',
@@ -46,25 +45,47 @@ define(function (require, exports, module) {
         },
 
         initialize: function() {
+            this.renderViews = [];
+            this.collection = new TwitterCollection();
+            this.listenTo(this.collection, 'reset', this.renderTwits);
             this.render();
             this.update();
         },
         render: function() {
             this.$el.html(Util.templates(this.template, this.options));
+            this.scrollEl = Util.setupBaronScroll($('[data-js-items-container]', this.$el));
         },
         update: function() {
+            var self = this;
             $.ajax({
                 url: '//evbyminsd6293.minsk.epam.com:8081/twitter',
                 dataType: 'jsonp',
+                jsonp: 'jsonp',
                 crossDomain: true,
                 async: true,
             })
                 .done(function(data) {
-                    console.dir(data)
+                    self.collection.reset(data);
                 })
         },
         renderTwits: function() {
-            $('[data-js-items-container]', this.$el)
+            this.destroyTwits();
+            var self = this;
+            _.each(this.collection.models, function(model) {
+                var view = new TwitterNewsItemView({model: model});
+                self.renderViews.push(view);
+                $('[data-js-items-container]', self.$el).append(view.$el);
+            })
+            Util.setupBaronScrollSize(this.scrollEl, { maxHeight: 450 });
+        },
+        destroyTwits: function() {
+            _.each(this.renderViews, function(view) {
+                view.destroy();
+            });
+            this.renderViews = [];
+        },
+        onDestroy: function() {
+            this.destroyTwits();
         }
     });
 

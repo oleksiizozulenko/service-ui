@@ -38,18 +38,4 @@
     background-repeat: no-repeat;
     background-position: 45px 50%;
   }
-
-  .twits {
-    width: 100%;
-    .twit {
-      display: block;
-      width: 100%;
-      padding: 10px 15px;
-      margin-bottom: 10px;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-      background-color: $COLOR--white-default;
-    }
-  }
 }

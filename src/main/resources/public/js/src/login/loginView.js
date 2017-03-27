@@ -36,7 +36,7 @@ define(function(require, exports, module) {
     var LoginRestoreView = require('login/loginRestoreView');
     var LoginResetView = require('login/loginResetView');
 
-    var TwitterNewsComponent = require('components/TwitterNewsComponent');
+    var TwitterNewsComponent = require('components/twitterNewsComponent/TwitterNewsComponent');
 
     var LoginView = Epoxy.View.extend({
 
